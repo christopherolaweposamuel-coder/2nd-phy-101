@@ -32,337 +32,126 @@ button{padding:12px 17px;margin:5px 5px 5px 0;border:0;border-radius:8px;font-we
 <header>
 <h1>PHY 101 CBT Examination</h1>
 <p>Mechanics: Space, Time and Motion</p>
-<p>30 Questions | 5 Minutes</p>
+<p>30 Questions | 15 Minutes</p>
 </header>
-
 <main>
 <div class="status">
-<div><strong>Time:</strong> <span id="timer">05:00</span></div>
+<div><strong>Time:</strong> <span id="timer">15:00</span></div>
 <div><strong>Answered:</strong> <span id="answered">0 / 30</span></div>
 <div id="progress"><div id="bar"></div></div>
 </div>
-
-<p>Choose one option for each question. Answers and explanations will appear only after submission or when time runs out.</p>
-
+<p>Choose one option for each question. Answers and explanations appear only after submission or when the timer expires.</p>
 <form id="quiz">
 <div id="questions"></div>
 <button type="submit" id="submitBtn">Submit All Answers</button>
 </form>
-
 <div id="results" class="hidden"></div>
 <button id="restartBtn" class="hidden" onclick="location.reload()">Restart Test</button>
 </main>
-
 <script>
 const questions = [
-{
-q:"Which statement best describes a reference frame?",
-o:["A unit used to measure mass","A coordinate system used to describe position and motion","A device for measuring temperature","A type of scalar"],
-a:1,
-e:"A reference frame provides a coordinate system relative to which position and motion are described."
-},
-{
-q:"Which of these is an SI fundamental unit?",
-o:["Newton","Joule","Kilogram","Watt"],
-a:2,
-e:"The kilogram is an SI base unit for mass. Newton, joule and watt are derived units."
-},
-{
-q:"The dimensional formula for velocity is:",
-o:["[LT⁻¹]","[LT⁻²]","[MLT⁻¹]","[L²T⁻¹]"],
-a:0,
-e:"Velocity = displacement/time. Its dimension is [LT⁻¹]."
-},
-{
-q:"The dimensional formula for acceleration is:",
-o:["[LT⁻¹]","[LT⁻²]","[MLT⁻²]","[T⁻¹]"],
-a:1,
-e:"Acceleration is change in velocity per unit time, giving [LT⁻²]."
-},
-{
-q:"Which quantity is a scalar?",
-o:["Displacement","Acceleration","Velocity","Distance"],
-a:3,
-e:"Distance has magnitude only. Displacement, acceleration and velocity have direction as well."
-},
-{
-q:"Which of these is a vector quantity?",
-o:["Time","Mass","Displacement","Temperature"],
-a:2,
-e:"Displacement has both magnitude and direction."
-},
-{
-q:"Two perpendicular vector components are 3 m and 4 m. Find the resultant magnitude.",
-o:["1 m","5 m","7 m","12 m"],
-a:1,
-e:"R = √(3² + 4²) = √25 = 5 m."
-},
-{
-q:"A vector has components Ax = 6 and Ay = 8. Its magnitude is:",
-o:["2","10","14","48"],
-a:1,
-e:"|A| = √(6² + 8²) = √100 = 10."
-},
-{
-q:"A unit vector has a magnitude of:",
-o:["Zero","One","Ten","Any negative value"],
-a:1,
-e:"A unit vector has magnitude one and specifies direction."
-},
-{
-q:"Which rule is used to determine the direction of a cross product?",
-o:["Left-hand rule","Right-hand rule","Triangle rule","Parallel rule"],
-a:1,
-e:"The right-hand rule determines the direction of the cross product."
-},
-{
-q:"The cross product of two vectors is generally a:",
-o:["Scalar","Vector","Unit","Dimensionless number"],
-a:1,
-e:"The cross product produces a vector perpendicular to both vectors."
-},
-{
-q:"If A × B = C, then B × A equals:",
-o:["C","−C","2C","Zero always"],
-a:1,
-e:"The cross product is anti-commutative: B × A = −(A × B)."
-},
-{
-q:"For standard unit vectors, i × j equals:",
-o:["i","j","k","−k"],
-a:2,
-e:"For standard right-handed unit vectors, i × j = k."
-},
-{
-q:"For standard unit vectors, j × i equals:",
-o:["k","−k","i","j"],
-a:1,
-e:"Reversing the order changes the sign: j × i = −k."
-},
-{
-q:"The cross product of two parallel vectors is:",
-o:["Always one","Always maximum","Zero","Always negative"],
-a:2,
-e:"Its magnitude is AB sin θ. For parallel vectors θ = 0°, so the cross product is zero."
-},
-{
-q:"If position x = 4t², the velocity is:",
-o:["4t","8t","8t²","4t²"],
-a:1,
-e:"Velocity dx/dt = d(4t²)/dt = 8t."
-},
-{
-q:"If x = 5t³, the velocity is:",
-o:["5t²","10t","15t²","15t³"],
-a:2,
-e:"Differentiate x = 5t³: v = dx/dt = 15t²."
-},
-{
-q:"If x = 3t², the acceleration is:",
-o:["3t","6","6t","3t²"],
-a:1,
-e:"Velocity is 6t. Differentiating again gives acceleration a = 6."
-},
-{
-q:"If x = 2t³, the acceleration is:",
-o:["6t","12t","12t²","2t"],
-a:1,
-e:"Velocity is 6t². Differentiating again gives a = 12t."
-},
-{
-q:"Average velocity is defined as:",
-o:["Total distance divided by time in every case","Displacement divided by elapsed time","Acceleration divided by time","Speed multiplied by time"],
-a:1,
-e:"Average velocity equals displacement divided by the time interval."
-},
-{
-q:"Average speed is calculated using:",
-o:["Displacement/time","Distance/time","Velocity × time","Acceleration/time"],
-a:1,
-e:"Average speed equals total distance travelled divided by total elapsed time."
-},
-{
-q:"Instantaneous velocity is the rate of change of:",
-o:["Position with time","Mass with time","Acceleration with distance","Force with mass"],
-a:0,
-e:"Instantaneous velocity is the derivative of position with respect to time."
-},
-{
-q:"Instantaneous acceleration is the rate of change of:",
-o:["Position","Distance","Velocity","Mass"],
-a:2,
-e:"Acceleration is the derivative of velocity with respect to time."
-},
-{
-q:"If r(t) = 2t³i + t²j, the velocity is:",
-o:["6t²i + 2tj","12ti + 2j","2t³i + 2tj","6ti + tj"],
-a:0,
-e:"Differentiate each component: v(t) = 6t²i + 2tj."
-},
-{
-q:"If r(t) = 2t³i + t²j, the acceleration is:",
-o:["6t²i + 2tj","12ti + 2j","6ti + 2j","12t²i + 2tj"],
-a:1,
-e:"Differentiate velocity 6t²i + 2tj to obtain a(t) = 12ti + 2j."
-},
-{
-q:"In a dimensionally correct equation, both sides must have:",
-o:["The same numerical values","The same dimensions","Identical symbols only","No units"],
-a:1,
-e:"Dimensional homogeneity requires both sides of a valid physical equation to have the same dimensions."
-},
-{
-q:"Which expression represents the dimension of area?",
-o:["[L]","[L²]","[LT⁻¹]","[L³]"],
-a:1,
-e:"Area = length × length, so its dimension is [L²]."
-},
-{
-q:"Which expression represents the dimension of volume?",
-o:["[L]","[L²]","[L³]","[T³]"],
-a:2,
-e:"Volume = length × length × length, so its dimension is [L³]."
-},
-{
-q:"A person walks 10 m east and then 10 m west back to the starting point. What is the displacement?",
-o:["20 m east","20 m west","10 m","0 m"],
-a:3,
-e:"Displacement depends on the change from initial to final position. Returning to the start gives zero displacement."
-},
-{
-q:"Which statement about displacement is correct?",
-o:["It always equals distance","It has magnitude and direction","It is always positive","It depends only on path length"],
-a:1,
-e:"Displacement is a vector from the initial position to the final position and has magnitude and direction."
-}
+{q:"Which statement best describes a reference frame?",o:["A unit used to measure mass","A coordinate system used to describe position and motion","A device for measuring temperature","A type of scalar"],a:1,e:"A reference frame provides a coordinate system relative to which position and motion are described."},
+{q:"Which of these is an SI fundamental unit?",o:["Newton","Joule","Kilogram","Watt"],a:2,e:"The kilogram is an SI base unit for mass. Newton, joule and watt are derived units."},
+{q:"The dimensional formula for velocity is:",o:["[LT⁻¹]","[LT⁻²]","[MLT⁻¹]","[L²T⁻¹]"],a:0,e:"Velocity = displacement/time. Its dimension is [LT⁻¹]."},
+{q:"The dimensional formula for acceleration is:",o:["[LT⁻¹]","[LT⁻²]","[MLT⁻²]","[T⁻¹]"],a:1,e:"Acceleration is change in velocity per unit time, giving [LT⁻²]."},
+{q:"Which quantity is a scalar?",o:["Displacement","Acceleration","Velocity","Distance"],a:3,e:"Distance has magnitude only. Displacement, acceleration and velocity have direction as well."},
+{q:"Which of these is a vector quantity?",o:["Time","Mass","Displacement","Temperature"],a:2,e:"Displacement has both magnitude and direction."},
+{q:"Two perpendicular vector components are 3 m and 4 m. Find the resultant magnitude.",o:["1 m","5 m","7 m","12 m"],a:1,e:"R = √(3² + 4²) = √25 = 5 m."},
+{q:"A vector has components Ax = 6 and Ay = 8. Its magnitude is:",o:["2","10","14","48"],a:1,e:"|A| = √(6² + 8²) = √100 = 10."},
+{q:"A unit vector has a magnitude of:",o:["Zero","One","Ten","Any negative value"],a:1,e:"A unit vector has magnitude one and specifies direction."},
+{q:"Which rule is used to determine the direction of a cross product?",o:["Left-hand rule","Right-hand rule","Triangle rule","Parallel rule"],a:1,e:"The right-hand rule determines the direction of the cross product."},
+{q:"The cross product of two vectors is generally a:",o:["Scalar","Vector","Unit","Dimensionless number"],a:1,e:"The cross product produces a vector perpendicular to both vectors."},
+{q:"If A × B = C, then B × A equals:",o:["C","−C","2C","Zero always"],a:1,e:"The cross product is anti-commutative: B × A = −(A × B)."},
+{q:"For standard unit vectors, i × j equals:",o:["i","j","k","−k"],a:2,e:"For standard right-handed unit vectors, i × j = k."},
+{q:"For standard unit vectors, j × i equals:",o:["k","−k","i","j"],a:1,e:"Reversing the order changes the sign: j × i = −k."},
+{q:"The cross product of two parallel vectors is:",o:["Always one","Always maximum","Zero","Always negative"],a:2,e:"Its magnitude is AB sin θ. For parallel vectors θ = 0°, so the cross product is zero."},
+{q:"If position x = 4t², the velocity is:",o:["4t","8t","8t²","4t²"],a:1,e:"Velocity dx/dt = d(4t²)/dt = 8t."},
+{q:"If x = 5t³, the velocity is:",o:["5t²","10t","15t²","15t³"],a:2,e:"Differentiate x = 5t³: v = dx/dt = 15t²."},
+{q:"If x = 3t², the acceleration is:",o:["3t","6","6t","3t²"],a:1,e:"Velocity is 6t. Differentiating again gives acceleration a = 6."},
+{q:"If x = 2t³, the acceleration is:",o:["6t","12t","12t²","2t"],a:1,e:"Velocity is 6t². Differentiating again gives a = 12t."},
+{q:"Average velocity is defined as:",o:["Total distance divided by time in every case","Displacement divided by elapsed time","Acceleration divided by time","Speed multiplied by time"],a:1,e:"Average velocity equals displacement divided by the time interval."},
+{q:"Average speed is calculated using:",o:["Displacement/time","Distance/time","Velocity × time","Acceleration/time"],a:1,e:"Average speed equals total distance travelled divided by total elapsed time."},
+{q:"Instantaneous velocity is the rate of change of:",o:["Position with time","Mass with time","Acceleration with distance","Force with mass"],a:0,e:"Instantaneous velocity is the derivative of position with respect to time."},
+{q:"Instantaneous acceleration is the rate of change of:",o:["Position","Distance","Velocity","Mass"],a:2,e:"Acceleration is the derivative of velocity with respect to time."},
+{q:"If r(t) = 2t³i + t²j, the velocity is:",o:["6t²i + 2tj","12ti + 2j","2t³i + 2tj","6ti + tj"],a:0,e:"Differentiate each component: v(t) = 6t²i + 2tj."},
+{q:"If r(t) = 2t³i + t²j, the acceleration is:",o:["6t²i + 2tj","12ti + 2j","6ti + 2j","12t²i + 2tj"],a:1,e:"Differentiate velocity 6t²i + 2tj to obtain a(t) = 12ti + 2j."},
+{q:"In a dimensionally correct equation, both sides must have:",o:["The same numerical values","The same dimensions","Identical symbols only","No units"],a:1,e:"Dimensional homogeneity requires both sides of a valid physical equation to have the same dimensions."},
+{q:"Which expression represents the dimension of area?",o:["[L]","[L²]","[LT⁻¹]","[L³]"],a:1,e:"Area = length × length, so its dimension is [L²]."},
+{q:"Which expression represents the dimension of volume?",o:["[L]","[L²]","[L³]","[T³]"],a:2,e:"Volume = length × length × length, so its dimension is [L³]."},
+{q:"A person walks 10 m east and then 10 m west back to the starting point. What is the displacement?",o:["20 m east","20 m west","10 m","0 m"],a:3,e:"Displacement depends on the change from initial to final position. Returning to the start gives zero displacement."},
+{q:"Which statement about displacement is correct?",o:["It always equals distance","It has magnitude and direction","It is always positive","It depends only on path length"],a:1,e:"Displacement is a vector from the initial position to the final position and has magnitude and direction."}
 ];
 
-const form = document.getElementById("quiz");
-const questionsBox = document.getElementById("questions");
-const timerDisplay = document.getElementById("timer");
-const answeredDisplay = document.getElementById("answered");
-const progressBar = document.getElementById("bar");
-const results = document.getElementById("results");
-const submitBtn = document.getElementById("submitBtn");
-const restartBtn = document.getElementById("restartBtn");
+const form=document.getElementById("quiz");
+const questionsBox=document.getElementById("questions");
+const timerDisplay=document.getElementById("timer");
+const answeredDisplay=document.getElementById("answered");
+const progressBar=document.getElementById("bar");
+const results=document.getElementById("results");
+const submitBtn=document.getElementById("submitBtn");
+const restartBtn=document.getElementById("restartBtn");
+let seconds=900,ended=false,clock;
 
-let seconds = 300;
-let ended = false;
-let clock;
-
-function renderQuestions() {
-  questions.forEach((question, index) => {
-    const section = document.createElement("section");
-    section.className = "question";
-
-    let html = `<p><strong>Question ${index + 1} of 30:</strong> ${question.q}</p>`;
-
-    question.o.forEach((option, optionIndex) => {
-      html += `
-        <label class="option">
-          <input type="radio" name="q${index}" value="${optionIndex}">
-          ${String.fromCharCode(65 + optionIndex)}. ${option}
-        </label>`;
+function renderQuestions(){
+  questions.forEach((question,index)=>{
+    const section=document.createElement("section");
+    section.className="question";
+    let html=`<p><strong>Question ${index+1} of 30:</strong> ${question.q}</p>`;
+    question.o.forEach((option,optionIndex)=>{
+      html+=`<label class="option"><input type="radio" name="q${index}" value="${optionIndex}"> ${String.fromCharCode(65+optionIndex)}. ${option}</label>`;
     });
-
-    html += `<div class="explanation hidden" id="explanation-${index}"></div>`;
-    section.innerHTML = html;
+    html+=`<div class="explanation hidden" id="explanation-${index}"></div>`;
+    section.innerHTML=html;
     questionsBox.appendChild(section);
   });
 }
-
-function updateAnswered() {
-  const count = questions.filter((q, index) =>
-    document.querySelector(`input[name="q${index}"]:checked`)
-  ).length;
-
-  answeredDisplay.textContent = `${count} / 30`;
-  progressBar.style.width = `${count / 30 * 100}%`;
+function updateAnswered(){
+  const count=questions.filter((q,index)=>document.querySelector(`input[name="q${index}"]:checked`)).length;
+  answeredDisplay.textContent=`${count} / 30`;
+  progressBar.style.width=`${count/30*100}%`;
 }
-
-questionsBox.addEventListener("change", updateAnswered);
-
-function showTime() {
-  const minutes = Math.floor(seconds / 60);
-  const remaining = seconds % 60;
-
-  timerDisplay.textContent =
-    String(minutes).padStart(2, "0") + ":" +
-    String(remaining).padStart(2, "0");
-
-  if (seconds <= 0) {
-    submitTest(true);
-    return;
-  }
-
+questionsBox.addEventListener("change",updateAnswered);
+function showTime(){
+  const minutes=Math.floor(seconds/60),remaining=seconds%60;
+  timerDisplay.textContent=String(minutes).padStart(2,"0")+":"+String(remaining).padStart(2,"0");
+  if(seconds<=0){submitTest(true);return;}
   seconds--;
 }
-
-function submitTest(timeExpired = false) {
-  if (ended) return;
-  ended = true;
+function submitTest(timeExpired=false){
+  if(ended)return;
+  ended=true;
   clearInterval(clock);
-
-  let score = 0;
-  let unanswered = 0;
-  let review = "";
-
-  questions.forEach((question, index) => {
-    const selected = document.querySelector(`input[name="q${index}"]:checked`);
-    const explanation = document.getElementById(`explanation-${index}`);
-    const chosen = selected ? Number(selected.value) : -1;
-    const isCorrect = chosen === question.a;
-
-    if (!selected) unanswered++;
-    if (isCorrect) score++;
-
+  let score=0,unanswered=0,review="";
+  questions.forEach((question,index)=>{
+    const selected=document.querySelector(`input[name="q${index}"]:checked`);
+    const explanation=document.getElementById(`explanation-${index}`);
+    const chosen=selected?Number(selected.value):-1;
+    const isCorrect=chosen===question.a;
+    if(!selected)unanswered++;
+    if(isCorrect)score++;
     explanation.classList.remove("hidden");
-    explanation.innerHTML = `
-      <p class="${isCorrect ? "correct" : "incorrect"}">
-        ${isCorrect ? "Correct!" : "Incorrect."}
-      </p>
-      <p><strong>Correct answer:</strong>
-      ${String.fromCharCode(65 + question.a)}. ${question.o[question.a]}</p>
+    explanation.innerHTML=`<p class="${isCorrect?"correct":"incorrect"}">${isCorrect?"Correct!":"Incorrect."}</p>
+      <p><strong>Correct answer:</strong> ${String.fromCharCode(65+question.a)}. ${question.o[question.a]}</p>
       <p><strong>Explanation:</strong> ${question.e}</p>`;
-
-    review += `<p>Question ${index + 1}: ${isCorrect ? "Correct" : "Incorrect"}</p>`;
+    review+=`<p>Question ${index+1}: ${isCorrect?"Correct":"Incorrect"}</p>`;
   });
-
-  const percentage = Math.round(score / 30 * 100);
-
+  const percentage=Math.round(score/30*100);
   results.classList.remove("hidden");
-  results.innerHTML = `
-    <h2>Examination Result</h2>
-    <h3>Score: ${score} / 30 (${percentage}%)</h3>
-    <p>Correct answers: ${score}</p>
-    <p>Incorrect or unanswered: ${30 - score}</p>
+  results.innerHTML=`<h2>Examination Result</h2><h3>Score: ${score} / 30 (${percentage}%)</h3>
+    <p>Correct answers: ${score}</p><p>Incorrect or unanswered: ${30-score}</p>
     <p>Unanswered questions: ${unanswered}</p>
-    <p>${timeExpired
-      ? "Time is up. Your test was submitted automatically."
-      : "You submitted your test successfully."}</p>
-    <hr>
-    <h3>Answer Review</h3>
-    ${review}
+    <p>${timeExpired?"Time is up. Your test was submitted automatically.":"You submitted your test successfully."}</p>
+    <hr><h3>Answer Review</h3>${review}
     <button onclick="window.print()">Print / Save Result as PDF</button>`;
-
-  submitBtn.disabled = true;
-  document.querySelectorAll('input[type="radio"]').forEach(input => {
-    input.disabled = true;
-  });
-
+  submitBtn.disabled=true;
+  document.querySelectorAll('input[type="radio"]').forEach(input=>input.disabled=true);
   restartBtn.classList.remove("hidden");
-  results.scrollIntoView({ behavior: "smooth" });
+  results.scrollIntoView({behavior:"smooth"});
 }
-
-form.addEventListener("submit", event => {
-  event.preventDefault();
-  submitTest(false);
-});
-
+form.addEventListener("submit",event=>{event.preventDefault();submitTest(false);});
 renderQuestions();
 showTime();
-clock = setInterval(showTime, 1000);
+clock=setInterval(showTime,1000);
 </script>
 </body>
 </html>
-
