@@ -3,155 +3,482 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PHY 101 CBT - 30 Questions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHM 101 CBT Round 2</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font:16px/1.6 Arial,sans-serif;background:#f1f5f9;color:#172033}
-header{background:#10264d;color:white;text-align:center;padding:24px 12px}
-main{max-width:850px;margin:auto;padding:15px}
-.status,.question,#results{background:white;border:1px solid #dce2ea;border-radius:12px;padding:16px;margin:14px 0}
-.status{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
-#timer{font-size:20px;color:#b42318;font-weight:bold}
-#progress{height:8px;background:#e2e8f0;width:100%;border-radius:8px;overflow:hidden}
-#bar{height:100%;width:0;background:#185adb}
-.option{display:block;padding:10px;margin:8px 0;border:1px solid #dce2ea;border-radius:8px;cursor:pointer}
-.option:hover{background:#eff6ff}
-.option input{margin-right:8px}
-button{padding:12px 17px;margin:5px 5px 5px 0;border:0;border-radius:8px;font-weight:bold;font-size:16px;cursor:pointer}
-#submitBtn{background:#185adb;color:white}
-#restartBtn{background:#e2e8f0}
-.hidden{display:none}
-.explanation{background:#f0fdf4;border-left:4px solid #16a34a;padding:12px;margin-top:12px}
-.correct{color:#15803d;font-weight:bold}
-.incorrect{color:#b42318;font-weight:bold}
-@media print{#submitBtn,#restartBtn,.status{display:none}}
+* { box-sizing: border-box; }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #edf1f7;
+    margin: 0;
+    padding: 20px;
+    color: #222;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+header, .question, #result {
+    background-color: white;
+    padding: 22px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+}
+
+h1 { color: #123b66; }
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-weight: bold;
+}
+
+#timer { color: red; }
+
+.question h3 {
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.option {
+    display: block;
+    padding: 12px;
+    margin: 9px 0;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: #e6f1ff;
+}
+
+button {
+    padding: 13px 22px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 5px;
+}
+
+#submit {
+    background-color: #145b91;
+    color: white;
+}
+
+#reset {
+    background-color: #ddd;
+}
+
+#result { display: none; }
+
+.answer {
+    padding: 13px;
+    margin: 12px 0;
+    background-color: #f3f5f8;
+    border-radius: 7px;
+    line-height: 1.5;
+}
+
+.correct { border-left: 5px solid green; }
+.incorrect { border-left: 5px solid red; }
+
+.explanation {
+    margin-top: 8px;
+    color: #435366;
+}
+
+@media(max-width:600px) {
+    body { padding: 8px; }
+    header, .question, #result { padding: 15px; }
+}
 </style>
 </head>
+
 <body>
+
+<div class="container">
+
 <header>
-<h1>PHY 101 CBT Examination</h1>
-<p>Mechanics: Space, Time and Motion</p>
-<p>30 Questions | 15 Minutes</p>
+    <h1>CHM 101 – CBT ROUND 2</h1>
+    <p>Redeemer University | 100 Level</p>
+    <p><strong>Topic: Electronic Configuration</strong></p>
+
+    <div class="info">
+        <span>20 Questions</span>
+        <span id="timer">15:00</span>
+        <span id="progress">Answered: 0/20</span>
+    </div>
 </header>
-<main>
-<div class="status">
-<div><strong>Time:</strong> <span id="timer">15:00</span></div>
-<div><strong>Answered:</strong> <span id="answered">0 / 30</span></div>
-<div id="progress"><div id="bar"></div></div>
-</div>
-<p>Choose one option for each question. Answers and explanations appear only after submission or when the timer expires.</p>
+
 <form id="quiz">
-<div id="questions"></div>
-<button type="submit" id="submitBtn">Submit All Answers</button>
+    <div id="questions"></div>
+
+    <button type="submit" id="submit">SUBMIT ANSWERS</button>
+    <button type="button" id="reset">RESTART TEST</button>
 </form>
-<div id="results" class="hidden"></div>
-<button id="restartBtn" class="hidden" onclick="location.reload()">Restart Test</button>
-</main>
+
+<div id="result"></div>
+
+</div>
+
 <script>
+
 const questions = [
-{q:"Which statement best describes a reference frame?",o:["A unit used to measure mass","A coordinate system used to describe position and motion","A device for measuring temperature","A type of scalar"],a:1,e:"A reference frame provides a coordinate system relative to which position and motion are described."},
-{q:"Which of these is an SI fundamental unit?",o:["Newton","Joule","Kilogram","Watt"],a:2,e:"The kilogram is an SI base unit for mass. Newton, joule and watt are derived units."},
-{q:"The dimensional formula for velocity is:",o:["[LT⁻¹]","[LT⁻²]","[MLT⁻¹]","[L²T⁻¹]"],a:0,e:"Velocity = displacement/time. Its dimension is [LT⁻¹]."},
-{q:"The dimensional formula for acceleration is:",o:["[LT⁻¹]","[LT⁻²]","[MLT⁻²]","[T⁻¹]"],a:1,e:"Acceleration is change in velocity per unit time, giving [LT⁻²]."},
-{q:"Which quantity is a scalar?",o:["Displacement","Acceleration","Velocity","Distance"],a:3,e:"Distance has magnitude only. Displacement, acceleration and velocity have direction as well."},
-{q:"Which of these is a vector quantity?",o:["Time","Mass","Displacement","Temperature"],a:2,e:"Displacement has both magnitude and direction."},
-{q:"Two perpendicular vector components are 3 m and 4 m. Find the resultant magnitude.",o:["1 m","5 m","7 m","12 m"],a:1,e:"R = √(3² + 4²) = √25 = 5 m."},
-{q:"A vector has components Ax = 6 and Ay = 8. Its magnitude is:",o:["2","10","14","48"],a:1,e:"|A| = √(6² + 8²) = √100 = 10."},
-{q:"A unit vector has a magnitude of:",o:["Zero","One","Ten","Any negative value"],a:1,e:"A unit vector has magnitude one and specifies direction."},
-{q:"Which rule is used to determine the direction of a cross product?",o:["Left-hand rule","Right-hand rule","Triangle rule","Parallel rule"],a:1,e:"The right-hand rule determines the direction of the cross product."},
-{q:"The cross product of two vectors is generally a:",o:["Scalar","Vector","Unit","Dimensionless number"],a:1,e:"The cross product produces a vector perpendicular to both vectors."},
-{q:"If A × B = C, then B × A equals:",o:["C","−C","2C","Zero always"],a:1,e:"The cross product is anti-commutative: B × A = −(A × B)."},
-{q:"For standard unit vectors, i × j equals:",o:["i","j","k","−k"],a:2,e:"For standard right-handed unit vectors, i × j = k."},
-{q:"For standard unit vectors, j × i equals:",o:["k","−k","i","j"],a:1,e:"Reversing the order changes the sign: j × i = −k."},
-{q:"The cross product of two parallel vectors is:",o:["Always one","Always maximum","Zero","Always negative"],a:2,e:"Its magnitude is AB sin θ. For parallel vectors θ = 0°, so the cross product is zero."},
-{q:"If position x = 4t², the velocity is:",o:["4t","8t","8t²","4t²"],a:1,e:"Velocity dx/dt = d(4t²)/dt = 8t."},
-{q:"If x = 5t³, the velocity is:",o:["5t²","10t","15t²","15t³"],a:2,e:"Differentiate x = 5t³: v = dx/dt = 15t²."},
-{q:"If x = 3t², the acceleration is:",o:["3t","6","6t","3t²"],a:1,e:"Velocity is 6t. Differentiating again gives acceleration a = 6."},
-{q:"If x = 2t³, the acceleration is:",o:["6t","12t","12t²","2t"],a:1,e:"Velocity is 6t². Differentiating again gives a = 12t."},
-{q:"Average velocity is defined as:",o:["Total distance divided by time in every case","Displacement divided by elapsed time","Acceleration divided by time","Speed multiplied by time"],a:1,e:"Average velocity equals displacement divided by the time interval."},
-{q:"Average speed is calculated using:",o:["Displacement/time","Distance/time","Velocity × time","Acceleration/time"],a:1,e:"Average speed equals total distance travelled divided by total elapsed time."},
-{q:"Instantaneous velocity is the rate of change of:",o:["Position with time","Mass with time","Acceleration with distance","Force with mass"],a:0,e:"Instantaneous velocity is the derivative of position with respect to time."},
-{q:"Instantaneous acceleration is the rate of change of:",o:["Position","Distance","Velocity","Mass"],a:2,e:"Acceleration is the derivative of velocity with respect to time."},
-{q:"If r(t) = 2t³i + t²j, the velocity is:",o:["6t²i + 2tj","12ti + 2j","2t³i + 2tj","6ti + tj"],a:0,e:"Differentiate each component: v(t) = 6t²i + 2tj."},
-{q:"If r(t) = 2t³i + t²j, the acceleration is:",o:["6t²i + 2tj","12ti + 2j","6ti + 2j","12t²i + 2tj"],a:1,e:"Differentiate velocity 6t²i + 2tj to obtain a(t) = 12ti + 2j."},
-{q:"In a dimensionally correct equation, both sides must have:",o:["The same numerical values","The same dimensions","Identical symbols only","No units"],a:1,e:"Dimensional homogeneity requires both sides of a valid physical equation to have the same dimensions."},
-{q:"Which expression represents the dimension of area?",o:["[L]","[L²]","[LT⁻¹]","[L³]"],a:1,e:"Area = length × length, so its dimension is [L²]."},
-{q:"Which expression represents the dimension of volume?",o:["[L]","[L²]","[L³]","[T³]"],a:2,e:"Volume = length × length × length, so its dimension is [L³]."},
-{q:"A person walks 10 m east and then 10 m west back to the starting point. What is the displacement?",o:["20 m east","20 m west","10 m","0 m"],a:3,e:"Displacement depends on the change from initial to final position. Returning to the start gives zero displacement."},
-{q:"Which statement about displacement is correct?",o:["It always equals distance","It has magnitude and direction","It is always positive","It depends only on path length"],a:1,e:"Displacement is a vector from the initial position to the final position and has magnitude and direction."}
+
+{
+q:"Which of the following sets of quantum numbers is NOT possible?",
+o:[
+"n = 2, l = 1, ml = 0, ms = +1/2",
+"n = 3, l = 2, ml = -2, ms = -1/2",
+"n = 2, l = 2, ml = 0, ms = +1/2",
+"n = 4, l = 0, ml = 0, ms = -1/2"
+],
+a:2,
+e:"For n = 2, l can only be 0 or 1. The value l = 2 is not permitted."
+},
+
+{
+q:"An electron occupies a 5f orbital. What is the value of its azimuthal quantum number?",
+o:["0","1","2","3"],
+a:3,
+e:"The letters correspond to l values: s = 0, p = 1, d = 2, f = 3."
+},
+
+{
+q:"How many possible orientations are available for a d orbital subshell?",
+o:["3","5","7","10"],
+a:1,
+e:"For d, l = 2. Number of orbitals = 2l + 1 = 5."
+},
+
+{
+q:"An electron has n = 3 and l = 0. Which statement is correct?",
+o:[
+"It belongs to a 3p orbital",
+"It belongs to a 3s orbital",
+"It belongs to a 3d orbital",
+"It belongs to a 2s orbital"
+],
+a:1,
+e:"When l = 0, the orbital is s. Since n = 3, it is 3s."
+},
+
+{
+q:"What is the maximum number of electrons that can occupy the fourth principal energy level?",
+o:["8","18","24","32"],
+a:3,
+e:"Using 2n²: 2 × 4² = 32 electrons."
+},
+
+{
+q:"Which of these subshells contains seven orbitals?",
+o:["s","p","d","f"],
+a:3,
+e:"An f subshell has seven orbitals and can accommodate 14 electrons."
+},
+
+{
+q:"If an atom has 17 electrons, how many electrons will occupy its 3p subshell in the ground state?",
+o:["2","3","5","6"],
+a:3,
+e:"Chlorine has 17 electrons: 1s² 2s² 2p⁶ 3s² 3p⁵. Correction: its 3p subshell contains 5 electrons.",
+corrected:3
+},
+
+{
+q:"Which principle explains why 4s fills before 3d in the usual filling sequence?",
+o:[
+"Hund's rule",
+"Pauli's exclusion principle",
+"Aufbau principle",
+"Law of conservation of mass"
+],
+a:2,
+e:"The Aufbau principle requires electrons to occupy the lowest available energy orbital first. The usual sequence places 4s before 3d."
+},
+
+{
+q:"An orbital already contains two electrons. Which arrangement is allowed?",
+o:[
+"Both electrons have spin +1/2",
+"Both electrons have spin -1/2",
+"One has +1/2 and the other has -1/2",
+"Both electrons have identical four quantum numbers"
+],
+a:2,
+e:"Pauli's exclusion principle requires the two electrons in one orbital to have opposite spins."
+},
+
+{
+q:"Which electronic configuration represents nitrogen (Z = 7)?",
+o:[
+"1s² 2s² 2p³",
+"1s² 2s² 2p⁵",
+"1s² 2s¹ 2p⁴",
+"1s² 2s² 2p²"
+],
+a:0,
+e:"Nitrogen has 7 electrons: 2 + 2 + 3 = 7."
+},
+
+{
+q:"An element has the electronic configuration 1s² 2s² 2p⁶ 3s² 3p⁴. Identify the element.",
+o:["Sulfur","Chlorine","Argon","Phosphorus"],
+a:0,
+e:"Total electrons = 2 + 2 + 6 + 2 + 4 = 16. Atomic number 16 is sulfur."
+},
+
+{
+q:"Which of the following follows Hund's rule?",
+o:[
+"2p orbitals are paired before being singly occupied",
+"Electrons occupy equal-energy orbitals singly before pairing",
+"Every orbital can hold four electrons",
+"Electrons always occupy the highest energy orbital first"
+],
+a:1,
+e:"Hund's rule states that degenerate orbitals are occupied singly before electrons pair."
+},
+
+{
+q:"Which configuration is the correct ground-state configuration of copper?",
+o:[
+"[Ar] 4s² 3d⁹",
+"[Ar] 4s¹ 3d¹⁰",
+"[Ar] 4s² 3d¹⁰",
+"[Ar] 4s¹ 3d⁹"
+],
+a:1,
+e:"Copper is an exception. Its actual configuration is [Ar] 4s¹ 3d¹⁰ because a completely filled d subshell has extra stability."
+},
+
+{
+q:"How many electrons are present in an O²⁻ ion? (Oxygen has atomic number 8.)",
+o:["6","8","10","12"],
+a:2,
+e:"O²⁻ gains two electrons. Total = 8 + 2 = 10 electrons."
+},
+
+{
+q:"Which configuration belongs to Mg²⁺? (Mg has atomic number 12.)",
+o:[
+"1s² 2s² 2p⁶",
+"1s² 2s² 2p⁶ 3s²",
+"1s² 2s² 2p⁴",
+"1s² 2s² 2p⁶ 3s¹"
+],
+a:0,
+e:"Magnesium loses its two 3s electrons, leaving 10 electrons: 1s² 2s² 2p⁶."
+},
+
+{
+q:"Which orbital has a spherical shape?",
+o:["p","d","f","s"],
+a:3,
+e:"The s orbital is spherical. The p orbital is dumb-bell shaped."
+},
+
+{
+q:"Which statement about the 3d subshell is correct?",
+o:[
+"It belongs to the third principal energy level",
+"It contains seven orbitals",
+"It can hold a maximum of 6 electrons",
+"It fills before 4s in the usual Aufbau sequence"
+],
+a:0,
+e:"3d belongs to n = 3, has five orbitals and holds a maximum of 10 electrons. In the usual sequence, 4s fills before 3d."
+},
+
+{
+q:"What is the correct configuration of Fe²⁺ if neutral iron is [Ar] 4s² 3d⁶?",
+o:[
+"[Ar] 4s² 3d⁴",
+"[Ar] 4s¹ 3d⁵",
+"[Ar] 3d⁶",
+"[Ar] 3d⁴"
+],
+a:2,
+e:"Transition metals lose their 4s electrons before 3d electrons. Fe²⁺ loses both 4s electrons."
+},
+
+{
+q:"Which statement correctly compares a shell, subshell and orbital?",
+o:[
+"A shell contains orbitals only and no subshells",
+"A subshell contains orbitals, while a shell contains subshells",
+"An orbital contains several shells",
+"A shell and an orbital mean exactly the same thing"
+],
+a:1,
+e:"A shell is a principal energy level. It contains subshells, and subshells contain orbitals."
+},
+
+{
+q:"An atom has the configuration [Ne] 3s² 3p⁵. How many electrons does it have?",
+o:["15","16","17","18"],
+a:2,
+e:"Ne represents 10 electrons. Adding 2 + 5 gives 17 electrons. The element is chlorine."
+}
+
 ];
 
-const form=document.getElementById("quiz");
-const questionsBox=document.getElementById("questions");
-const timerDisplay=document.getElementById("timer");
-const answeredDisplay=document.getElementById("answered");
-const progressBar=document.getElementById("bar");
-const results=document.getElementById("results");
-const submitBtn=document.getElementById("submitBtn");
-const restartBtn=document.getElementById("restartBtn");
-let seconds=900,ended=false,clock;
+// Display questions
 
-function renderQuestions(){
-  questions.forEach((question,index)=>{
-    const section=document.createElement("section");
-    section.className="question";
-    let html=`<p><strong>Question ${index+1} of 30:</strong> ${question.q}</p>`;
-    question.o.forEach((option,optionIndex)=>{
-      html+=`<label class="option"><input type="radio" name="q${index}" value="${optionIndex}"> ${String.fromCharCode(65+optionIndex)}. ${option}</label>`;
+const holder = document.getElementById("questions");
+
+questions.forEach((item, i) => {
+
+    const section = document.createElement("div");
+    section.className = "question";
+
+    section.innerHTML =
+    `<h3>${i+1}. ${item.q}</h3>` +
+
+    item.o.map((option,j) => `
+        <label class="option">
+        <input type="radio" name="q${i}" value="${j}">
+        ${String.fromCharCode(65+j)}. ${option}
+        </label>
+    `).join("");
+
+    holder.appendChild(section);
+
+});
+
+// Progress tracker
+
+const form = document.getElementById("quiz");
+
+form.addEventListener("change", () => {
+
+    const count = questions.filter((_,i) =>
+        form.querySelector(`input[name="q${i}"]:checked`)
+    ).length;
+
+    document.getElementById("progress").textContent =
+    `Answered: ${count}/20`;
+
+});
+
+// Timer
+
+let remaining = 15 * 60;
+let finished = false;
+let interval;
+
+function tick() {
+
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
+
+    document.getElementById("timer").textContent =
+    `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+    if (remaining <= 0) {
+        finish();
+    } else {
+        remaining--;
+    }
+
+}
+
+tick();
+interval = setInterval(tick, 1000);
+
+// Submit and mark
+
+function finish() {
+
+    if (finished) return;
+
+    finished = true;
+    clearInterval(interval);
+
+    let score = 0;
+    let review = "";
+
+    questions.forEach((item,i) => {
+
+        const selected = form.querySelector(
+            `input[name="q${i}"]:checked`
+        );
+
+        const chosen = selected ? Number(selected.value) : -1;
+
+        const good = chosen === item.a;
+
+        if (good) score++;
+
+        const yourAnswer = chosen === -1
+            ? "Not answered"
+            : `${String.fromCharCode(65+chosen)}. ${item.o[chosen]}`;
+
+        review += `
+        <div class="answer ${good ? "correct" : "incorrect"}">
+
+        <strong>Question ${i+1}: ${good ? "CORRECT" : "INCORRECT"}</strong>
+
+        <p>Your answer: ${yourAnswer}</p>
+
+        <p>Correct answer:
+        ${String.fromCharCode(65+item.a)}. ${item.o[item.a]}</p>
+
+        <div class="explanation">
+        Explanation: ${item.e}
+        </div>
+
+        </div>`;
+
     });
-    html+=`<div class="explanation hidden" id="explanation-${index}"></div>`;
-    section.innerHTML=html;
-    questionsBox.appendChild(section);
-  });
+
+    document.querySelectorAll("#quiz input").forEach(input => {
+        input.disabled = true;
+    });
+
+    document.getElementById("submit").disabled = true;
+
+    const result = document.getElementById("result");
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+        <h2>YOUR RESULT</h2>
+        <h1>${score}/20</h1>
+        <h3>${Math.round(score/20*100)}%</h3>
+        <p>${score >= 16 ? "Excellent performance!" :
+             score >= 10 ? "Good attempt. Keep practising." :
+             "Keep revising. Study the explanations carefully."}</p>
+        <hr>
+        <h2>ANSWERS AND EXPLANATIONS</h2>
+        ${review}
+    `;
+
+    result.scrollIntoView({behavior:"smooth"});
+
 }
-function updateAnswered(){
-  const count=questions.filter((q,index)=>document.querySelector(`input[name="q${index}"]:checked`)).length;
-  answeredDisplay.textContent=`${count} / 30`;
-  progressBar.style.width=`${count/30*100}%`;
-}
-questionsBox.addEventListener("change",updateAnswered);
-function showTime(){
-  const minutes=Math.floor(seconds/60),remaining=seconds%60;
-  timerDisplay.textContent=String(minutes).padStart(2,"0")+":"+String(remaining).padStart(2,"0");
-  if(seconds<=0){submitTest(true);return;}
-  seconds--;
-}
-function submitTest(timeExpired=false){
-  if(ended)return;
-  ended=true;
-  clearInterval(clock);
-  let score=0,unanswered=0,review="";
-  questions.forEach((question,index)=>{
-    const selected=document.querySelector(`input[name="q${index}"]:checked`);
-    const explanation=document.getElementById(`explanation-${index}`);
-    const chosen=selected?Number(selected.value):-1;
-    const isCorrect=chosen===question.a;
-    if(!selected)unanswered++;
-    if(isCorrect)score++;
-    explanation.classList.remove("hidden");
-    explanation.innerHTML=`<p class="${isCorrect?"correct":"incorrect"}">${isCorrect?"Correct!":"Incorrect."}</p>
-      <p><strong>Correct answer:</strong> ${String.fromCharCode(65+question.a)}. ${question.o[question.a]}</p>
-      <p><strong>Explanation:</strong> ${question.e}</p>`;
-    review+=`<p>Question ${index+1}: ${isCorrect?"Correct":"Incorrect"}</p>`;
-  });
-  const percentage=Math.round(score/30*100);
-  results.classList.remove("hidden");
-  results.innerHTML=`<h2>Examination Result</h2><h3>Score: ${score} / 30 (${percentage}%)</h3>
-    <p>Correct answers: ${score}</p><p>Incorrect or unanswered: ${30-score}</p>
-    <p>Unanswered questions: ${unanswered}</p>
-    <p>${timeExpired?"Time is up. Your test was submitted automatically.":"You submitted your test successfully."}</p>
-    <hr><h3>Answer Review</h3>${review}
-    <button onclick="window.print()">Print / Save Result as PDF</button>`;
-  submitBtn.disabled=true;
-  document.querySelectorAll('input[type="radio"]').forEach(input=>input.disabled=true);
-  restartBtn.classList.remove("hidden");
-  results.scrollIntoView({behavior:"smooth"});
-}
-form.addEventListener("submit",event=>{event.preventDefault();submitTest(false);});
-renderQuestions();
-showTime();
-clock=setInterval(showTime,1000);
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    finish();
+});
+
+// Restart
+
+document.getElementById("reset").addEventListener("click", function() {
+    location.reload();
+});
+
 </script>
+
 </body>
 </html>
